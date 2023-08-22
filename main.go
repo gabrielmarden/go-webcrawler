@@ -1,16 +1,25 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"os"
 
 	"github.com/gabrielmarden/webcrawler/config"
 	"github.com/gabrielmarden/webcrawler/graph"
 	"github.com/gabrielmarden/webcrawler/links"
 )
 
+var (
+	url       = flag.String("url", "", "base url to start the webcrawler")
+	keyword   = flag.String("keyword", "", "keyword searched in the pages")
+	maxResult = flag.Int("max", -1, "number of max results found for the webcrawler")
+)
+
 func main() {
-	c, err := config.NewConfig(os.Args[1:])
+
+	flag.Parse()
+
+	c, err := config.NewConfig(*url, *keyword, *maxResult)
 	if err != nil {
 		fmt.Println(err)
 		return

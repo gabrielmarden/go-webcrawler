@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
-	"strconv"
 )
 
 type Config struct {
@@ -14,16 +13,12 @@ type Config struct {
 }
 
 //Constructor for a new Config type. However, we must pass as argument the correct number of itens inside the slice.
-//The slice in the argument must be the following: [0] URL, [1] KEYWORD, [2] MAX_RESULT
-func NewConfig(args []string) (Config, error) {
-	if len(args) < 2 {
-		return Config{}, fmt.Errorf("webcrawler: missing required parameters %v", args)
-	}
-
+//The slice in the argument must be the following: [0] url, [1] keyword, [2] max_result
+func NewConfig(url string, keyword string, maxResult int) (Config, error) {
 	return Config{
-		URL:       args[0],
-		Keyword:   args[1],
-		MaxResult: retrieveMaxResult(args),
+		URL:       url,
+		Keyword:   keyword,
+		MaxResult: maxResult,
 	}, nil
 }
 
@@ -83,18 +78,4 @@ var ValidateKeyword = func(c *Config) error {
 	}
 
 	return nil
-}
-
-func retrieveMaxResult(inputs []string) int {
-	if len(inputs) == 3 {
-		val, err := strconv.Atoi(inputs[2])
-		if err != nil {
-			fmt.Printf("error parsing max result parameter. input=%s", inputs)
-			return -1
-		}
-
-		return val
-	}
-
-	return -1
 }
