@@ -7,6 +7,7 @@ import (
 	"github.com/gabrielmarden/webcrawler/config"
 	"github.com/gabrielmarden/webcrawler/graph"
 	"github.com/gabrielmarden/webcrawler/links"
+	"github.com/gabrielmarden/webcrawler/util"
 )
 
 var (
@@ -34,10 +35,9 @@ func main() {
 	}
 
 	links := graph.TraverseBFS(crawl, []string{c.URL}, c.MaxResult, c.Keyword)
-	for _, link := range links.GetAll() {
-		fmt.Println(link)
-	}
 	fmt.Printf("webcrawler: the search found %d results", links.Length())
+
+	util.WriteDataToFile(links.GetAll(), "webcrawler")
 }
 
 func crawl(url string, keyword string) ([]string, bool) {
